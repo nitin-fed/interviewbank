@@ -4,83 +4,84 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Document</title>
-        
-        <style>
-            #main {
-                height: 200px;
-                width: 260px;
-                display: block;
-                margin: 10px;
-            }
+		<title>Document</title>
 
-            #container div {
-                height: 50px;
-                width: 50px;
-                display: inline-block;
-                margin: 10px;
-            
-            }
-        </style>
+		<style>
+			#main {
+				height: 200px;
+				width: 260px;
+				display: block;
+				margin: 10px;
+			}
+
+			#container div {
+				height: 50px;
+				width: 50px;
+				display: inline-block;
+				margin: 10px;
+			}
+		</style>
 	</head>
 	<body>
-<div id='main'></div>
+		<div id="main"></div>
 
-<div id='container'></div>
-
-    </body>
+		<div id="container"></div>
+	</body>
 
 	<script>
 		function getRandomColor() {
-            const randomColor = { r: getRandomArbitrary(0, 255), g: getRandomArbitrary(0, 255), b: getRandomArbitrary(0, 255) };
+			const randomColor = {
+				r: getRandomArbitrary(0, 255),
+				g: getRandomArbitrary(0, 255),
+				b: getRandomArbitrary(0, 255),
+			};
 			return randomColor;
 		}
 		function getRandomArbitrary(min, max) {
 			return Math.round(Math.random() * (max - min) + min);
-        }        
-        const colorCode = getRandomColor();
-        document.getElementById('main').style.backgroundColor = "rgb("+colorCode.r+","+colorCode.g+","+colorCode.b+")"; 
+		}
+		const colorCode = getRandomColor();
+		document.getElementById('main').style.backgroundColor =
+			'rgb(' + colorCode.r + ',' + colorCode.g + ',' + colorCode.b + ')';
 
-        let container = document.getElementById('container');
+		let container = document.getElementById('container');
 
-        for(let i=0; i<4; i++) {
-            const colorBlock = document.createElement('div')
-            const colorCode = getRandomColor();
-            colorBlock.style.backgroundColor = "rgba("+colorCode.r+","+colorCode.g+","+colorCode.b+")";
-            container.appendChild(colorBlock);
-        }
+		for (let i = 0; i < 4; i++) {
+			const colorBlock = document.createElement('div');
+			const colorCode = getRandomColor();
+			colorBlock.style.backgroundColor = 'rgba(' + colorCode.r + ',' + colorCode.g + ',' + colorCode.b + ')';
+			container.appendChild(colorBlock);
+		}
 
-        container.addEventListener('click', updateColor, false)
+		container.addEventListener('click', updateColor, false);
 
-        function updateColor() {
-            const mainDivColor = getComputedStyle(document.getElementById('main')).backgroundColor;
-            const mainDivColorStr = mainDivColor.substring(mainDivColor.indexOf('(')+1, mainDivColor.indexOf(')'));
-            const mainDivColorArr = mainDivColorStr.split(',').map(function(item) { return item.trim();});
-            
-            const currentColor = getComputedStyle(event.target).backgroundColor;
-            const currentColorStr = currentColor.substring(currentColor.indexOf('(')+1, currentColor.indexOf(')'));
-            const currentColorArr = currentColorStr.split(',').map(function(item) {return item.trim();});
-      
-            let newColor = []
-            let newColorObj = {}
-            let colorCodeArr = ['r','g','b']
+		function updateColor() {
+			const mainDivColor = getComputedStyle(document.getElementById('main')).backgroundColor;
+			const mainDivColorStr = mainDivColor.substring(mainDivColor.indexOf('(') + 1, mainDivColor.indexOf(')'));
+			const mainDivColorArr = mainDivColorStr.split(',').map(function(item) {
+				return item.trim();
+			});
 
-            for(let i=0; i<mainDivColorArr.length; i++){
-                
-                newColor.push( Math.round( (mainDivColorArr[i] * 0.9) +  (currentColorArr[i] * 0.1) ));
-            }
+			const currentColor = getComputedStyle(event.target).backgroundColor;
+			const currentColorStr = currentColor.substring(currentColor.indexOf('(') + 1, currentColor.indexOf(')'));
+			const currentColorArr = currentColorStr.split(',').map(function(item) {
+				return item.trim();
+			});
 
-            //TODO - build object dynamically
-            newColorObj={'r': newColor[0], 'g': newColor[1], 'b':newColor[2]}
-            
-            console.log(newColorObj)
-            document.getElementById('main').style.backgroundColor = "rgba("+newColorObj.r+","+newColorObj.g+","+newColorObj.b+")"; 
-        }
+			let newColor = [];
+			let newColorObj = {};
+			let colorCodeArr = ['r', 'g', 'b'];
 
+			for (let i = 0; i < mainDivColorArr.length; i++) {
+				newColor.push(Math.round(mainDivColorArr[i] * 0.9 + currentColorArr[i] * 0.1));
+			}
+
+			//TODO - build object dynamically
+			newColorObj = { r: newColor[0], g: newColor[1], b: newColor[2] };
+
+			console.log(newColorObj);
+			document.getElementById('main').style.backgroundColor =
+				'rgba(' + newColorObj.r + ',' + newColorObj.g + ',' + newColorObj.b + ')';
+		}
 	</script>
 </html>
-
-
-
-// Google Interview Question Dec 2019 //Que: fill random color in a DIV, fill another 4 divs with random color, on
-//click on any of this 4 div pick the color of clicked div and fill the main div with 9:1 ratio (meaning 90% from main div and 10% from clicked div)
